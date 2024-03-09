@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockBrowser } from 'mockzilla-webextension';
+import { mockEvent } from 'mockzilla-webextension';
 import App from './App';
 
 describe('App', () => {
