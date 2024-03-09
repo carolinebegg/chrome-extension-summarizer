@@ -7,14 +7,20 @@ interface Snippet {
   text: string;
 }
 
+const sample_snippet: Snippet = { id: 1, text: 'Sample snippet' };
+
 function App() {
-  const [snippets, setSnippets] = useState<Snippet[]>([
-    { id: 1, text: 'Sample snippet' },
-  ]);
+  const [snippets, setSnippets] = useState<Snippet[]>([]);
 
   useEffect(() => {
-    chrome.storage.local.get({ snippets: [] }, (result) => {
-      setSnippets(result.snippets || []);
+    chrome.storage.local.get('snippets', (result) => {
+      if (result.snippets === undefined) {
+        // If 'snippets' key doesn't exist in local storage, set the initial state with "Sample Snippet"
+        setSnippets([sample_snippet]);
+      } else {
+        // If 'snippets' key exists in local storage, set the state with the stored snippets
+        setSnippets(result.snippets || []);
+      }
     });
   }, []);
 
