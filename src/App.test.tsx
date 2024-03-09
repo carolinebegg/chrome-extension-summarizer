@@ -1,23 +1,25 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockEvent } from 'mockzilla-webextension';
+import * as chrome from 'sinon-chrome';
 import App from './App';
 
+(global as any).chrome = chrome;
+
 describe('App', () => {
-  beforeEach(() => {
-    // Clear all mocks before each test
-    mockBrowser.flush();
+  afterEach(() => {
+    // Reset the chrome stub after each test
+    chrome.flush();
   });
 
   test('renders Snippet Collector header', async () => {
     // Mock the chrome.storage.local.get method to return an empty snippets array
-    mockBrowser.storage.local.get.expect({ snippets: [] }).andResolve({ snippets: [] });
+    chrome.storage.local.get.withArgs({ snippets: [] }).yields({ snippets: [] });
 
     render(<App />);
     const headerElement = await screen.findByText(/Snippet Collector/i);
     expect(headerElement).toBeInTheDocument();
 
     // Expect the chrome.storage.local.get method to have been called
-    expect(mockBrowser.storage.local.get).toHaveBeenCalledWith({ snippets: [] });
+    expect(chrome.storage.local.get.withArgs({ snippets: [] }).calledOnce).toBe(true);
   });
 });
