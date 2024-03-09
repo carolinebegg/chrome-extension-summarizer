@@ -22,11 +22,14 @@
   "scripts": {
     "build": "webpack --config webpack.config.js && cp manifest.json dist && cp public/background.js dist && cp public/contentScript.js dist && mkdir -p dist/images && cp public/images/* dist/images",
     "watch": "webpack -w --config webpack.config.js",
-    "test": "react-scripts test --watchAll"
+    "test": "react-scripts test --watchAll --detectOpenHandles"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/chrome": "^0.0.263",
+    "@types/sinon-chrome": "^2.2.15",
     "jest": "^27.5.1",
+    "jest-sinon": "^1.1.0",
     "sinon": "^17.0.1",
     "sinon-chrome": "^3.0.1",
     "ts-loader": "^9.4.2",

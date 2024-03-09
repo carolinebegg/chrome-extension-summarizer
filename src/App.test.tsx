@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import * as sinon from 'sinon';
 import * as chrome from 'sinon-chrome';
+import 'jest-sinon';
 import App from './App';
 
 (global as any).chrome = chrome;
@@ -20,6 +22,8 @@ describe('App', () => {
     expect(headerElement).toBeInTheDocument();
 
     // Expect the chrome.storage.local.get method to have been called
-    expect(chrome.storage.local.get.withArgs({ snippets: [] }).calledOnce).toBe(true);
+    // without jest-sinon, you would have to use the following:
+    //expect(chrome.storage.local.get.withArgs({ snippets: [] }).calledOnce).toBe(true);
+    expect(chrome.storage.local.get).toHaveBeenCalledWith({ snippets: [] });
   });
 });
