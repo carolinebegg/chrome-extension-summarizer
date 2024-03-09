@@ -18,9 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "typeRoots": ["./src/globals.d.ts", "./node_modules/@types"]
   },
   "include": [
     "src"
-  ]
+, "public/background.js", "public/contentScript.js"  ]
 }

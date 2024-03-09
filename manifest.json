@@ -1,9 +1,19 @@
 {
-    "version": "1.0.0",
     "manifest_version": 3,
-    "name": "React Chrome Extension",
+    "name": "Snippet Saver",
+    "version": "1.0",
+    "description": "Save snippets of text from web pages",
+    "permissions": ["storage", "activeTab", "contextMenus"],
+    "background": {
+      "service_worker": "background.js"
+    },
     "action": {
-        "default_popup": "js/index.html",
-        "default_title": "React Chrome Extension"
-    }
-}
+      "default_popup": "js/index.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["contentScript.js"]
+      }
+    ]
+  }
