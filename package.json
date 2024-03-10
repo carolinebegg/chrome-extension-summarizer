@@ -22,7 +22,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js && cp manifest.json dist && cp public/background.js dist && cp public/contentScript.js dist && mkdir -p dist/images && cp public/images/* dist/images",
     "watch": "webpack -w --config webpack.config.js",
-    "test": "react-scripts test --watchAll --detectOpenHandles"
+    "test": "react-scripts test --watchAll --detectOpenHandles",
+    "coverage": "react-scripts test --coverage"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

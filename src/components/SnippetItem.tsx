@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
-interface Snippet {
+export interface Snippet {
   id: number;
   text: string;
 }
 
-interface SnippetItemProps {
+export interface SnippetItemProps {
   snippet: Snippet;
   onEdit: (newSnippet: string) => void;
   onDelete: () => void;
 }
 
-const SnippetItem: React.FC<SnippetItemProps> = ({ snippet, onEdit, onDelete }) => {
+export const SnippetItem: React.FC<SnippetItemProps> = ({ snippet, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedSnippet, setEditedSnippet] = useState(snippet.text);
 
@@ -49,5 +49,3 @@ const SnippetItem: React.FC<SnippetItemProps> = ({ snippet, onEdit, onDelete }) 
     </li>
   );
 };
-
-export default SnippetItem;

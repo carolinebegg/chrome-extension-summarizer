@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SnippetItem from './SnippetItem';
+import { SnippetItem } from './SnippetItem';
 
 const mockSnippet = {
   id: 1,
@@ -8,26 +8,26 @@ const mockSnippet = {
 };
 
 describe('SnippetItem', () => {
-  test('renders snippet text', () => {
+  it('renders snippet text', () => {
     render(<SnippetItem snippet={mockSnippet} onEdit={() => {}} onDelete={() => {}} />);
     expect(screen.getByText('Sample snippet')).toBeInTheDocument();
   });
 
-  test('renders edit, copy, and delete buttons', () => {
+  it('renders edit, copy, and delete buttons', () => {
     render(<SnippetItem snippet={mockSnippet} onEdit={() => {}} onDelete={() => {}} />);
     expect(screen.getByText('Edit')).toBeInTheDocument();
     expect(screen.getByText('Copy')).toBeInTheDocument();
     expect(screen.getByText('Delete')).toBeInTheDocument();
   });
 
-  test('switches to edit mode when edit button is clicked', () => {
+  it('switches to edit mode when edit button is clicked', () => {
     render(<SnippetItem snippet={mockSnippet} onEdit={() => {}} onDelete={() => {}} />);
     fireEvent.click(screen.getByText('Edit'));
     expect(screen.getByDisplayValue('Sample snippet')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
   });
 
-  test('calls onEdit with the updated snippet when save button is clicked', () => {
+  it('calls onEdit with the updated snippet when save button is clicked', () => {
     const handleEdit = jest.fn();
     render(<SnippetItem snippet={mockSnippet} onEdit={handleEdit} onDelete={() => {}} />);
     fireEvent.click(screen.getByText('Edit'));
@@ -38,7 +38,7 @@ describe('SnippetItem', () => {
     expect(handleEdit).toHaveBeenCalledWith('Updated snippet');
   });
 
-  test('copies snippet text to clipboard when copy button is clicked', () => {
+  it('copies snippet text to clipboard when copy button is clicked', () => {
     /* mock the navigator.clipboard.writeText function to avoid actually interacting
        with the clipboard during the test. */
     Object.assign(navigator, {
@@ -51,7 +51,7 @@ describe('SnippetItem', () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Sample snippet');
   });
 
-  test('calls onDelete when delete button is clicked', () => {
+  it('calls onDelete when delete button is clicked', () => {
     const handleDelete = jest.fn();
     render(<SnippetItem snippet={mockSnippet} onEdit={() => {}} onDelete={handleDelete} />);
     fireEvent.click(screen.getByText('Delete'));

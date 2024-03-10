@@ -1,18 +1,15 @@
 import React from 'react';
-import SnippetItem from './SnippetItem';
+import { Snippet, SnippetItem } from './SnippetItem';
 
-interface Snippet {
-  id: number;
-  text: string;
-}
+export type { Snippet } from './SnippetItem';
 
-interface SnippetListProps {
+export interface SnippetListProps {
   snippets: Snippet[];
   onEditSnippet: (id: number, newSnippet: string) => void;
   onDeleteSnippet: (id: number) => void;
 }
 
-const SnippetList: React.FC<SnippetListProps> = ({
+export const SnippetList: React.FC<SnippetListProps> = ({
   snippets,
   onEditSnippet,
   onDeleteSnippet,
