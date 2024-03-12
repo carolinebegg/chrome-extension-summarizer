@@ -1,60 +1,33 @@
-const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin")
+const path = require("path");
 
 module.exports = {
-    entry: {
-        index: "./src/index.tsx"
-    },
+    entry: "./src/index.tsx",
     mode: "production",
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: [
-                    {
-                        loader: "ts-loader",
-                        options: {
-                            compilerOptions: { noEmit: false },
-                        }
-                    }],
+                test: /\.(ts|tsx)$/,
+                use: 'babel-loader',
                 exclude: /node_modules/,
             },
             {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
                 exclude: /node_modules/,
-                test: /\.css$/i,
-                use: [
-                    "style-loader",
-                    "css-loader"
-                ]
-
             },
         ],
     },
-    plugins: [
-        new CopyPlugin({
-            patterns: [
-                { from: "manifest.json", to: "../manifest.json" },
-            ],
-        }),
-        ...getHtmlPlugins(["index"]),
-    ],
     resolve: {
-        extensions: [".tsx", ".ts", ".js"],
+        extensions: [".tsx", ".ts", ".js", ".jsx"],
     },
     output: {
-        path: path.join(__dirname, "dist/js"),
-        filename: "[name].js",
+        path: path.resolve(__dirname, "dist"),
+        filename: "bundle.js",
     },
+    plugins: [
+        new HTMLPlugin({
+            template: "./public/index.html",
+        }),
+    ],
 };
-
-function getHtmlPlugins(chunks) {
-    return chunks.map(
-        (chunk) =>
-            new HTMLPlugin({
-                title: "React extension",
-                filename: `${chunk}.html`,
-                chunks: [chunk],
-            })
-    );
-}

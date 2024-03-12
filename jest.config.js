@@ -1,10 +1,18 @@
 module.exports = {
-  setupFilesAfterEnv: ['./jest.setup.js', "./src/setupTests.ts"],
-  // other Jest configuration options...
-  coverageReporters: ['text', 'html'],
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   transform: {
-      ".+\\.ts$": "ts-jest",
+    "^.+\\.(js|jsx|ts|tsx)$": "ts-jest",
+    "^.+\\.css$": "<rootDir>/__mocks__/styleMock.js"
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
-  moduleFileExtensions: ["ts", "js"],
+  moduleNameMapper: {
+    "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+  },
+  coverageReporters: ['text', 'html'],
+  testMatch: [
+    "**/__tests__/**/*.[jt]s?(x)",
+    "**/?(*.)+(spec|test).[jt]s?(x)"
+  ],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 }

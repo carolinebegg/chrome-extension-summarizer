@@ -8,7 +8,7 @@
       "service_worker": "background.js"
     },
     "action": {
-      "default_popup": "js/index.html"
+      "default_popup": "index.html"
     },
     "content_scripts": [
       {
