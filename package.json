@@ -14,7 +14,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js && cp manifest.json dist && cp public/background.js dist && cp public/contentScript.js dist && mkdir -p dist/images && cp public/images/* dist/images",
+    "build": "webpack --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js",
     "test": "jest --watchAll --detectOpenHandles",
     "coverage": "jest --coverage"
@@ -45,5 +45,33 @@
     "ts-loader": "^9.4.2",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@babel/preset-typescript"
+    ],
+    "plugins": [
+      "@babel/plugin-transform-runtime"
+    ]
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "ts-jest",
+      "^.+\\.css$": "<rootDir>/src/__mocks__/styleMock.js"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+    },
+    "coverageReporters": ["text", "html"],
+    "testMatch": [
+      "**/__tests__/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }

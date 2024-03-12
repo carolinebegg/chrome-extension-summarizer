@@ -1,4 +1,5 @@
 const HTMLPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
 
 module.exports = {
@@ -26,8 +27,20 @@ module.exports = {
         filename: "bundle.js",
     },
     plugins: [
+        /* Necessary to use HTMLPlugin to inject the bundle into the index.html */
         new HTMLPlugin({
             template: "./public/index.html",
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { 
+                    from: "public", 
+                    to: "", 
+                    globOptions: {
+                        ignore: ["**/index.html"], // This line excludes index.html
+                    },
+                },
+            ],
         }),
     ],
 };
