@@ -139,6 +139,6 @@ Here are a few ideas to extend the functionality of this Chrome extension:
 
 ## Credits
 
-The initial setup of this project was based on the tutorial by [Harshita Joshi](https://github.com/Harshita-mindfire) on creating a Chrome extension with React and TypeScript. The corresponding Medium article can be found [here](https://medium.com/@harshita.mindfire/creating-a-chrome-extension-with-react-a-step-by-step-guide-e9a7c89e48af).
+The initial setup of this project was based on the tutorial by [Harshita Joshi](https://github.com/Harshita-mindfire) on creating a Chrome extension with React and TypeScript. The corresponding Medium article can be found [here](https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1).
 
 The project has been extended with additional functionality, testing setup, and documentation.
