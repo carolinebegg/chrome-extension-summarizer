@@ -25,9 +25,10 @@ The second screenshot shows the **context menu** that appears when you right-cli
 ### Install From Release
 
 - Download the latest release from the [Releases](https://github.com/jlumbroso/chrome-extension-text-collector/releases)
+- Unzip the downloaded ZIP file
 - Open Chrome and navigate to `chrome://extensions`
 - Enable "Developer mode"
-- Drag and drop the downloaded `.zip` file into the extensions page
+- Drag and drop the unzipped folder into the extensions page
 
 ### Install From Source
 
