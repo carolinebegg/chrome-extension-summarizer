@@ -1,171 +1,156 @@
-# Snippet Saver Chrome Extension (React, TypeScript, Webpack)
+# Chrome Extension Idea: AI Research Assistant
 
-This project demonstrates how to build a Chrome extension using [React](https://react.dev/) with TypeScript and Webpack. It showcases key features such as interacting with Chrome APIs ([storage](https://developer.chrome.com/docs/extensions/reference/api/storage), [contextMenus](https://developer.chrome.com/docs/extensions/reference/api/contextMenus)), testing with [Jest](https://jestjs.io/) and [Sinon](https://sinonjs.org/), and structuring a React app with separation of concerns.
+## Authors
 
-## Features
+Caroline Begg, Runzhi Gu, Sam Bhatta, Daniel Kwon
 
-- Capture snippets of text from web pages using a [**context menu**](https://developer.chrome.com/docs/extensions/reference/api/contextMenus)
-- View, edit, and delete saved snippets in a [**popup window**](https://developer.chrome.com/docs/extensions/reference/api/action#show_a_popup) triggered by an [**action button**](https://developer.chrome.com/docs/extensions/reference/api/action)
-- Persist snippets using [Chrome's storage API](https://developer.chrome.com/docs/extensions/reference/api/storage)
-- Interact with the extension using content scripts and background scripts
-- Comprehensive testing setup using [Jest](https://jestjs.io/), [Sinon](https://sinonjs.org/), and [sinon-chrome](https://github.com/acvetkov/sinon-chrome/) for mocking Chrome API
+## Problem Statement
 
-## Screenshots
+Students, researchers, and information-seekers often struggle with the overwhelming task of sifting through vast amounts of online content to find relevant information. There is a lack of effective tools that are embedded in the web browser that helps the users quickly understand a long and complicated web article, which makes the research daunting and less productive.
 
-The first screenshot showcases the **popup window** with saved snippets and the **action button** (SC in the top-right corner):
 
-![Screenshot showcases the **popup window** with saved snippets and the **action button** (SC in the top-right corner)](./screenshot-action-button-and-popup.png)
+## Target Audience
 
-The second screenshot shows the **context menu** that appears when you right-click on a web page to capture a snippet (this context menu is registered and its events are handled in the `background.js` script):
+Students conducting research for academic papers or projects. Researchers gathering up to date information across various fields. Educators and content creators that collect rephrased information. Anyone who frequently engages in extensive online reading and needs to compile information efficiently. 
 
-![Screenshot of the context menu](./screenshot-context-menu.png)
 
-## Installation
+## Description
 
-### Install From Release
+The AI Research Assistant is a Chrome Extension powered by OpenAI API through the GPT model, designed to enhance the online research process. It offers a sidebar interface that allows users to summarize web pages or specific sections, and displays it in an organized and refined manner. 
 
-- Download the latest release from the [Releases](https://github.com/jlumbroso/chrome-extension-text-collector/releases)
-- Unzip the downloaded ZIP file
-- Open Chrome and navigate to `chrome://extensions`
-- Enable "Developer mode"
-- Drag and drop the unzipped folder into the extensions page
 
-### Install From Source
+## Selling Points
 
-1. Clone the repository:
+Efficient Information Processing: The extension swiftly summarizes long and complex web articles, condensing them into digestible highlights. This drastically reduces the time required for users to sift through and understand vast amounts of online content, making the research process more manageable and less overwhelming.
 
-   ```bash
-   git clone https://github.com/jlumbroso/chrome-extension-text-collector
-   ```
+Tailored Summarization: It provides users with the flexibility to select specific sections of a webpage for summarization. This feature ensures that users can focus on extracting information that is most relevant to their research needs, without having to wade through unrelated content.
+User-centric Design: The focus on a simple, intuitive user experience ensures that the tool is accessible to users with varying levels of technical expertise. Integrates directly into the web browser with a sidebar interface, providing a seamless tool for gathering, understanding, and organizing information without switching between apps.
+Intuitive Topic Mastery: Empowers users to swiftly grasp complex topics by distilling extensive online articles into concise, digestible summaries, directly within the browser.
+Enhanced Academic and Professional Output: Aids in producing high-quality academic papers, projects, and content by providing up-to-date, relevant information that is rephrased for clarity, aiding in analysis and creativity.
 
-2. Install dependencies:
 
-   ```bash
-   cd chrome-extension-text-collector
-   npm install
-   ```
+## User Stories
 
-3. Build the extension:
+- As a student, I want to quickly summarize long academic papers or articles so that I can understand their essence without spending hours reading.
 
-   ```bash
-   npm run build
-   ```
+- As a learner, I want to have a more intuitive understanding of complex topics and want my questions answered through examples in the webpage interactively.
 
-4. Load the extension in Chrome:
+- As a journalist, I want to compare summaries of various news articles on the same event so that I can identify discrepancies or biases in reporting.
 
-   - Open Chrome and navigate to `chrome://extensions`
-   - Enable "Developer mode"
-   - Click "Load unpacked" and select the `dist` directory from the project
+- As a content creator, I need to gather insights and facts on trending topics so that I can produce relevant and engaging content for my audience.
 
-## Usage
+- As a busy professional who needs to stay updated on industry trends, I want to quickly summarize industry reports and news articles so that I can make informed decisions without spending hours reading.
 
-- Right-click on a web page and select "Capture Snippet" from the context menu to save the selected text as a snippet
-- Click on the extension icon to open the popup window
-- In the popup, you can view, edit, and delete saved snippets
+- As a content creator, I need to rephrase and condense information from various sources for my blog posts to ensure originality and maintain my readers' interest.
 
-## Development
+- As a university student researching for a group project, I want to share summarized key points of articles with my team members so that we can collaborate more efficiently and stay on the same page.
 
-- Run the development server with hot reloading:
+- As an educator preparing lesson plans, I need to compile simplified explanations of complex subjects so that I can make the topics more accessible to my students.
 
-  ```bash
-  npm run watch
-  ```
+- As a policy analyst, I want to summarize government reports and legal documents quickly to draft briefs and recommendations for decision-makers without overlooking essential details.
 
-- Load the unpacked extension in Chrome from the `dist` directory
-- Make changes to the source code and the extension will automatically reload
+- As a developer keeping up with the latest in technology advancements, I need to digest technical documentation and research papers quickly to integrate new features into my work without getting bogged down by the volume of information.
 
-## Chrome Extension Architecture
+- As a health professional looking to stay informed about medical research, I want to extract vital information from research articles swiftly to apply the latest findings to my practice and patient care.
 
-This project follows the Manifest V3 architecture for Chrome extensions. Key components of the architecture include:
+- As a financial analyst, I need to condense market research reports and financial news into actionable insights so that I can advise clients or make investment decisions with agility.
 
-- `manifest.json`: Defines the extension's metadata, permissions, and script configurations
-- `background.js`: Runs in the background and handles events and long-running tasks
-- `contentScript.js`: Injected into web pages to interact with the DOM and communicate with the background script
-- Popup window: Displays the extension's user interface when the extension icon is clicked
 
-### Manifest V3
+## Notes
 
-This extension is built using the latest version of the Chrome extension manifest (Manifest V3). The `manifest.json` file defines the extension's properties, permissions, and scripts.
+A potential challenge is ensuring the AI understands the context and relevance of information accurately across different fields of study. Considering privacy concerns, it's important to clarify how data (highlights) is stored and managed.. Future iterations could include features like automatic citation generation and integration with academic databases for more comprehensive research support.
 
-Key aspects of the Manifest V3 configuration include:
 
-- `manifest_version`: Set to `3` to use Manifest V3
-- `background`: Specifies the background script as a service worker
-- `action`: Defines the popup HTML file
-- `permissions`: Declares the required permissions for the extension (storage, activeTab, contextMenus)
-- `content_scripts`: Specifies the content script to be injected into web pages
+## References & Inspiration
 
-## Project Architecture
+https://chromewebstore.google.com/detail/bookmark-manager-speed-di/pdcohkhhjbifkmpakaiopnllnddofbbn
 
-The project follows a modular architecture with separation of concerns:
+https://chromewebstore.google.com/detail/maxaime-use-1-click-ai-an/mhnlakgilnojmhinhkckjpncpbhabphi
 
-- `App`: The main component that manages the state and renders the `SnippetList`
-- `SnippetList`: Renders a list of `SnippetItem` components based on the saved snippets
-- `SnippetItem`: Represents an individual snippet with options to edit and delete
+https://openai.com/pricing
 
-The communication between the extension's scripts is handled as follows:
 
-- `contentScript.js`: Injected into web pages, captures selected text and sends a message to the background script
-- `background.js`: Listens for messages from the content script, saves snippets to storage, and manages the context menu
+## Technical Details
 
-## Testing
+### User Interface
 
-The project includes a comprehensive testing setup using Jest, Sinon, and sinon-chrome. The tests cover various aspects of the extension, including component rendering, user interactions, and mocking of Chrome APIs.
+Users will interact with the AI Research Assistant Chrome Extension primarily through a sidebar interface that appears in the Chrome browser. This sidebar will display summarized content from the current webpage or selected sections. Users can activate this sidebar by clicking on an extension icon in the Chrome toolbar or by selecting text and right-clicking to choose a "Summarize this section" option from the context menu. The interface will be designed for simplicity and ease of use, ensuring users of all technical levels can navigate and utilize the features effectively.
 
-To run the tests:
+- **Sidebar Interface:** The sidebar will display the summarized content of the current webpage or selected passages.
+- **Context Menu:** An option to summarize selected text on the webpage, enhancing flexibility and user control.
+- **Browser Action:** The icon in the Chrome Toolbar for toggling the sidebar and accessing (potential) extension settings.
 
-```bash
-npm run test
-```
+### API, Libraries, and Frameworks
 
-To generate a coverage report:
+- **OpenAI API:** Utilized to generate summaries of the page’s content through ChatGPT models, providing the user quick and accurate information.
+  - [OpenAI API Documentation](https://platform.openai.com/docs/introduction)
+  - [API Reference](https://platform.openai.com/docs/api-reference)
 
-```bash
-npm run coverage
-```
+- **Chrome Extensions API:** Used for integrating the sidebar, context menu, and browser action into the Chrome browser, facilitating user interaction with the extension.
+  - [Chrome Extensions API](https://developer.chrome.com/docs/extensions/reference/api)
 
-### Mocking Chrome APIs
 
-One of the key aspects of testing a Chrome extension is mocking the Chrome APIs. This project uses the following libraries to achieve this:
+### Data Storage
 
-- [Jest](https://jestjs.io/): The test runner and assertion library
-- [Sinon](https://sinonjs.org/): A library for creating spies, stubs, and mocks
-- [sinon-chrome](https://github.com/acvetkov/sinon-chrome/): A collection of pre-built mocks for Chrome APIs
-- [jest-sinon](https://github.com/djkf/jest-sinon): An extension for Jest to work seamlessly with Sinon
+We will use the Chrome Storage API to locally manage user preferences and an optional summary history. This choice ensures user data remains private and readily available, fostering a personalized and efficient user experience.
 
-Here's an example test that demonstrates mocking the Chrome storage API:
+- **User Preferences:** Settings such as summarization length and style, enabling tailored summarizations.
+- **Summarization History:** An optional feature for users to save and revisit summaries, including source URLs and summary content.
 
-```typescript
-it('sets initial state with empty array when snippets key is an empty array in local storage', async () => {
-  chrome.storage.local.get.withArgs('snippets').yields({ snippets: [] });
+## Project Management
 
-  render(<App />);
-  const snippetElements = screen.queryAllByRole('listitem');
-  expect(snippetElements).toHaveLength(0);
-});
-```
+### Collaboration and Task Allocation
 
-In this test, we mock the `chrome.storage.local.get` method to return an empty array for the 'snippets' key. This allows us to test how the `App` component behaves when there are no saved snippets.
+- **Leader:** Mars - Main decision-maker on the extension's features and overall direction in cases of different opinions. Will ensure the extension remains true to its intended purpose, directing its development with decisive leadership.
+- **Manager:** Caroline - Responsible for keeping the project on track, Caroline will manage logistics, from resource allocation to task distribution, ensuring a smooth workflow.
+- **Frontend Developer:** Daniel - Specializing in creating the user interface, Daniel will implement the sidebar and browser actions that make our extension interactive and user-friendly.
+- **API Integration Specialist:** Sam - will focus on integrating the OpenAI API, ensuring our extension can generate and display summaries efficiently.
 
-## Duplicating Project: Using This Project As A Starting Point
+The team will collaborate using GitHub for code management and version control, and Slack for daily communication. Weekly meetings will be held on campus to discuss progress, challenges, and next steps.
 
-You are welcome to use this repository as a starting point for your own work. The best way to do so is to import the repository into your own GitHub account: You can do so either [using the GitHub Importer (recommended)](https://docs.github.com/en/migrations/importing-source-code/using-github-importer/importing-a-repository-with-github-importer) or [manually using the command-line](https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository).
+### Risks and Mitigation
 
-## Ideas for Enhancements
+- **Risk #1:** Dependency on external APIs could lead to issues if the API becomes unavailable or changes.
+  - **Risk Designation:** High
+  - **Risk Severity:** Major
+  - **Likelihood:** Moderate
+  - **Mitigation Strategy:** Implement error handling and explore alternative APIs for backup. Keep the code modular to easily switch APIs if needed.
 
-Here are a few ideas to enhance the functionality of this Chrome extension:
+- **Risk #2:** Missed project milestone deadlines and deviation from the intended project schedule due to external commitments, miscalibrated expectations for the time required for project tasks, and general inefficiencies.
+  - **Risk Designation:** Medium
+  - **Severity:** Significant 
+  - **Likelihood:** Moderate
+  - **Mitigation Strategy:** Establish clear communication expectations from the beginning, set smaller, more frequent milestones, and factor in additional buffer time when creating project milestone deadlines to account for unexpected delays. Regular weekly (or more often, if needed) team meetings, clearly defined tasks, and team GCal with project planning deadlines.
 
-- Support rich formatting
-- Implement syntax highlighting when selecting code
-- Make it easy to copy a snippet to clipboard
-- Add tags or categories to snippets for better organization
-- Implement search functionality to filter snippets
-- Allow users to export and import snippets as JSON files
-- Integrate with a note-taking service or a cloud storage provider
-- Add a feature to share snippets with others
+- **Risk #3:** Inter-team conflicts and issues, including interpersonal conflicts that create a toxic work environment, team members not completing their designated tasks, and disagreements about the direction and implementation of the project.
+  - **Risk Designation:** Medium
+  - **Severity:** Significant
+  - **Likelihood:** Unlikely
+  - **Mitigation Strategy:** Clearly define the roles and expectations for each team member, foster a team culture of inclusivity and collaboration, and establish a process for regular check-ins and mediation of conflict.
 
-## Credits
+### Milestones and Timeline
 
-The initial setup of this project was based on the tutorial by [Harshita Joshi](https://github.com/Harshita-mindfire) on creating a Chrome extension with React and TypeScript. The corresponding Medium article can be found [here](https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1).
+- **Week 1 (Sunday, March 31st):**
+  - Task 1: Ideation and planning, Project setup
+  - Task 2: Finalize features, finalize UI designs
+  - Task 3: Outline project structure, start development on the sidebar interface and settings.
 
-The project has been extended with additional functionality, testing setup, and documentation. The most difficult part was figuring out the right combination of packages for the testing suite (for instance, I would avoid `jest-chrome`, `mockzilla`, `mockzilla-webextension`, to name but a few).
+- **Week 2 (Sunday, April 7th):**
+  - Task 4: Begin development
+  - Task 5: Implement summarization feature using the OpenAI API
+  - Task 6: Including content script for text selection and summarization
+
+- **Week 3 (Sunday, April 14th):**
+  - Task 7: Integrate local storage for preferences and optional summarization history
+  - Task 8: Begin internal testing and UI polishing
+  - Task 9: Enhance the user interface based on initial feedback, ensuring the sidebar is intuitive and the extension's overall usability is high.
+
+- **Week 4 (Sunday, April 21st):**
+  - Task 10: Rigorous testing of the summarization accuracy and user interface refinements based on test feedback
+  - Task 11: Prepare for launch by creating and polishing documentation 
+  - Task 12: Review and finalize all user-facing components
+
+
+Adjustments and Additional Notes:
+
+By adopting an agile project management approach, we'll maintain flexibility to adapt to feedback and unforeseen challenges, ensuring our Chrome Extension meets our high standards and user expectations at launch.
