@@ -11,7 +11,7 @@
       "512": "images/android-chrome-512x512.png"
     },
     "offline_enabled": true,
-    "permissions": ["storage", "activeTab", "contextMenus", "tabs"],
+    "permissions": ["storage", "activeTab", "contextMenus", "tabs", "scripting"],
     "background": {
       "service_worker": "background.js"
     },
@@ -23,5 +23,11 @@
         "matches": ["<all_urls>"],
         "js": ["contentScript.js"]
       }
-    ]
+    ],
+    "externally_connectable": {
+      "matches": [
+          "https://*/*"
+      ]
+  }
+    
   } 
