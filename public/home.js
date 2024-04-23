@@ -47,7 +47,7 @@ function verifyAPIKey(apiKey, isInitialCheck) {
     fetch('https://api.example.com/verify?key=' + apiKey)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            console.log(data);a
             if (data.isValid) {
                 window.location.href = 'summary.html';
             } else {

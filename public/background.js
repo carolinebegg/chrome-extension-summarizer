@@ -23,7 +23,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   console.log("clicked", info.menuItemId);
   if (info.menuItemId === 'captureSnippet') {
     const selectedText = info.selectionText; // Get the selected text
-
+    
     // Retrieve the existing snippets from chrome.storage.local
     chrome.storage.local.get('textSelected', function(data) {
         if (data.textSelected) {

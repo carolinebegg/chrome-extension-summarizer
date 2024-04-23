@@ -42,15 +42,15 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Button not found!');
     }
 // check selected text
-    // chrome.storage.local.get('textSelected', function(data) {
-    //     if (data.textSelected) {
-    //         // If an API key is found, redirect to the second page
-    //         var textArea = document.getElementById('text-summary');
-    //         if (textArea) {
-    //             textArea.value = data.textSelected;  // Display the selected text in the textarea
-    //         }
-    //     }
-    // });
+    chrome.storage.local.get('textSelected', function(data) {
+        if (data.textSelected) {
+            // If an API key is found, redirect to the second page
+            var textArea = document.getElementById('text-summary');
+            if (textArea) {
+                textArea.value = data.textSelected;  // Display the selected text in the textarea
+            }
+        }
+    });
 });
 
 // chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
