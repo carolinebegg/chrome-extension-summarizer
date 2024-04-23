@@ -35,7 +35,7 @@ document.addEventListener("mouseup", function(event) {
     // Send the selected text to the background or popup script
     // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
     chrome.storage.local.set({textSelected: selectionText}, function() {
-      alert('API key saved!' + '\n' + selectionText);
+      // alert('API key saved!' + '\n' + selectionText);
       // After saving, navigate to the second page
   });
   }
