@@ -25,21 +25,21 @@
   
 var selectedText = "";  // Declare selectedText once at the top
 
-document.addEventListener("mouseup", function(event) {
-  var selection = window.getSelection();
-  var selectionText = selection.toString().trim();
+// document.addEventListener("mouseup", function(event) {
+//   var selection = window.getSelection();
+//   var selectionText = selection.toString().trim();
   
-  console.log("[Content] selection: " + selection);
-  selectedText = selectionText;  // Assign new value without redeclaring
-  if (selectionText) {
-    // Send the selected text to the background or popup script
-    // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
-    chrome.storage.local.set({textSelected: selectionText}, function() {
-      // alert('API key saved!' + '\n' + selectionText);
-      // After saving, navigate to the second page
-  });
-  }
-});
+//   console.log("[Content] selection: " + selection);
+//   selectedText = selectionText;  // Assign new value without redeclaring
+//   if (selectionText) {
+//     // Send the selected text to the background or popup script
+//     // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
+//     chrome.storage.local.set({textSelected: selectionText}, function() {
+//       // alert('API key saved!' + '\n' + selectionText);
+//       // After saving, navigate to the second page
+//   });
+//   }
+// });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === "alertHighlightedText") {

@@ -24,15 +24,30 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === 'captureSnippet') {
     const selectedText = info.selectionText; // Get the selected text
     
+  // var selection = window.getSelection();
+  // var selectionText = selection.toString().trim();
+  
+  // console.log("[Content] selection: " + selection);
+  // selectedText = selectionText;  // Assign new value without redeclaring
+  if (selectedText) {
+    // Send the selected text to the background or popup script
+    // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
+    chrome.storage.local.set({textSelected: selectedText}, function() {
+      // alert('API key saved!' + '\n' + selectionText);
+      // After saving, navigate to the second page
+  });
+  }
+
+
     // Retrieve the existing snippets from chrome.storage.local
-    chrome.storage.local.get('textSelected', function(data) {
-        if (data.textSelected) {
-            // If an API key is found, redirect to the second page
-            var textArea = document.getElementById('text-summary');
-            if (textArea) {
-                textArea.value = data.textSelected;  // Display the selected text in the textarea
-            }
-        }
-    });
+    // chrome.storage.local.get('textSelected', function(data) {
+    //     if (data.textSelected) {
+    //         // If an API key is found, redirect to the second page
+    //         var textArea = document.getElementById('text-summary');
+    //         if (textArea) {
+    //             textArea.value = data.textSelected;  // Display the selected text in the textarea
+    //         }
+    //     }
+    // });
   }
 });

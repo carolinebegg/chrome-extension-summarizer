@@ -53,16 +53,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-//     if (message.action === "newTextSelected") {
-//       // Assume there's an element with ID 'text-summary' in your popup's HTML
-//       var textArea = document.getElementById('text-summary');
-//       alert("hey" + message.text);
-//       if (textArea) {
-//         textArea.value = message.text;  // Display the selected text in the textarea
-//       }
-//     }
-//   });
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message.action === "newTextSelected") {
+      // Assume there's an element with ID 'text-summary' in your popup's HTML
+      var textArea = document.getElementById('text-summary');
+      alert("hey" + message.text);
+      if (textArea) {
+        textArea.value = message.text;  // Display the selected text in the textarea
+      }
+    }
+  });
 
   
 document.addEventListener('DOMContentLoaded', function() {
