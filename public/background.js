@@ -36,18 +36,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       // alert('API key saved!' + '\n' + selectionText);
       // After saving, navigate to the second page
   });
+  chrome.runtime.sendMessage({
+    action: "newTextSelected",
+    text: info.selectionText
+  });
+  
   }
 
-
-    // Retrieve the existing snippets from chrome.storage.local
-    // chrome.storage.local.get('textSelected', function(data) {
-    //     if (data.textSelected) {
-    //         // If an API key is found, redirect to the second page
-    //         var textArea = document.getElementById('text-summary');
-    //         if (textArea) {
-    //             textArea.value = data.textSelected;  // Display the selected text in the textarea
-    //         }
-    //     }
-    // });
   }
 });
