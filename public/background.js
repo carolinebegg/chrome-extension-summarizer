@@ -23,18 +23,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   console.log("clicked", info.menuItemId);
   if (info.menuItemId === 'captureSnippet') {
     const selectedText = info.selectionText; // Get the selected text
-    
-  // var selection = window.getSelection();
-  // var selectionText = selection.toString().trim();
-  
-  // console.log("[Content] selection: " + selection);
-  // selectedText = selectionText;  // Assign new value without redeclaring
+
   if (selectedText) {
     // Send the selected text to the background or popup script
     // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
     chrome.storage.local.set({textSelected: selectedText}, function() {
-      // alert('API key saved!' + '\n' + selectionText);
-      // After saving, navigate to the second page
+
   });
   chrome.runtime.sendMessage({
     action: "newTextSelected",
