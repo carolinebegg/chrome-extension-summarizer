@@ -1,41 +1,79 @@
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      console.log(request, sender);
-      // Handle the message here
-      sendResponse({response: "Message received"});
+  function(request, sender, sendResponse) {
+    console.log(request, sender);
+    if (request.action === "verifyAPIKey") {
+        verifyAPIKey(request.apiKey, sendResponse);
+        return true; // indicate that you wish to send a response asynchronously
     }
-  );
+    // other message handling
+    sendResponse({response: "Message received"});
+  }
+);
+
 // This function is called when the extension is installed or updated
 chrome.runtime.onInstalled.addListener(() => {
-  // Create a context menu item
-  // See: https://developer.chrome.com/docs/extensions/reference/api/contextMenus#method-create
-  chrome.contextMenus.create({
-    id: 'captureSnippet', // Unique identifier for the context menu item
-    title: 'AI Summary', // Text to be displayed in the context menu
-    contexts: ['selection'], // Show the context menu item only when text is selected
-  });
+// Create a context menu item
+chrome.contextMenus.create({
+  id: 'captureSnippet',
+  title: 'AI Summary',
+  contexts: ['selection'],
+});
 });
 
 // This function is called when a context menu item is clicked
-// See: https://developer.chrome.com/docs/extensions/reference/api/contextMenus#event-onClicked
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  // Check if the clicked menu item is 'captureSnippet'
-  console.log("clicked", info.menuItemId);
-  if (info.menuItemId === 'captureSnippet') {
-    const selectedText = info.selectionText; // Get the selected text
-
-  if (selectedText) {
-    // Send the selected text to the background or popup script
-    // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
-    chrome.storage.local.set({textSelected: selectedText}, function() {
-
-  });
-  chrome.runtime.sendMessage({
-    action: "newTextSelected",
-    text: info.selectionText
-  });
-  
-  }
-
-  }
+if (info.menuItemId === 'captureSnippet') {
+  // Process the selected text
+  processSelectedText(info.selectionText, tab);
+}
 });
+
+// Function to verify API key
+function verifyAPIKey(apiKey, sendResponse) {
+  console.log('Verifying API key in background...');
+  fetch('https://api.openai.com/v1/engines', {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${apiKey}`
+      }
+  })
+  .then(response => {
+      if (response.ok) {
+          response.json().then(data => {
+              console.log('API key is valid in background. Engines available:', data);
+              sendResponse({valid: true});
+          });
+      } else {
+          response.json().then(data => {
+              console.error('API key validation failed in background:', data);
+              sendResponse({valid: false});
+          });
+      }
+  })
+  .catch(error => {
+      console.error('Error verifying API key in background:', error);
+      sendResponse({valid: false, error: error.message});
+  });
+}
+
+// Function to process the selected text
+function processSelectedText(selectedText, tab) {
+  // Example: Here you could use the selectedText to make an API call
+  // using the user's API key stored in chrome.storage.local
+  // and then do something with it, like sending it back to the content script
+  if (selectedText) {
+      chrome.storage.local.get('apiKey', function(data) {
+          if (data.apiKey) {
+              // Make the API call here
+              console.log('Make an API call with the stored API key.');
+          }
+      });
+      chrome.runtime.sendMessage({
+          action: "newTextSelected",
+          text: selectedText
+      });
+  }
+}
+``
+
+// check check check

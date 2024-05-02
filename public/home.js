@@ -1,26 +1,29 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if an API key is already stored
+    // Check if an API key is already stored when the DOM is fully loaded
     chrome.storage.local.get('apiKey', function(data) {
         if (data.apiKey) {
-            // Verify the stored API key
+            // If an API key is found, verify it
             verifyAPIKey(data.apiKey, true);
         }
     });
 
-    // Add event listener to save button
-    document.getElementById('saveButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission which refreshes the page
-        const apiKey = document.getElementById('apiKeyInput').value;
-        chrome.storage.local.set({apiKey: apiKey}, function() {
-            console.log('API key saved!');
-            verifyAPIKey(apiKey, false);
-        });
+   // Update the save button event listener as follows:
+document.getElementById('saveButton').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent form submission which refreshes the page
+    const apiKey = document.getElementById('apiKeyInput').value;
+    verifyAPIKey(apiKey, false, function(isValid) {
+        if (isValid) {
+            chrome.storage.local.set({apiKey: apiKey}, function() {
+                console.log('API key saved!');
+                window.location.href = 'summary.html';
+            });
+        } else {
+            alert('API key is invalid. Please check and try again.');
+        }
     });
 });
 
-function verifyAPIKey(apiKey, isInitialCheck) {
+function verifyAPIKey(apiKey, isInitialCheck, callback) {
     console.log('Verifying API key...');
     fetch('https://api.openai.com/v1/engines', {
         method: 'GET',
@@ -30,22 +33,21 @@ function verifyAPIKey(apiKey, isInitialCheck) {
     })
     .then(response => {
         if (response.ok) {
-            return response.json(); // Proceed with the response if it's successful
+            console.log('API key is valid.');
+            callback(true);
         } else {
-            throw new Error('API key validation failed: ' + response.statusText);
+            console.error('API key is invalid.');
+            callback(false);
+            if (isInitialCheck) {
+                chrome.storage.local.remove('apiKey');
+            }
         }
-    })
-    .then(data => {
-        console.log('API key is valid. Engines available:', data);
-        window.location.href = 'summary.html'; // Navigate to the summary page if the key is valid
     })
     .catch(error => {
         console.error('Error verifying API key:', error);
-        alert('Failed to verify API key. Please check and try again.\n' + error);
-        if (isInitialCheck) {  // Clear the stored invalid key if checking on load
-            chrome.storage.local.remove('apiKey', function() {
-                console.log('Invalid API key removed from storage.');
-            });
-        }
+        callback(false);
     });
 }
+
+
+

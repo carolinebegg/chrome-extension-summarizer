@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 alert("Alerting text");
-                chrome.tabs.sendMessage(tabs[0].id, {action: "alertHighlightedText"}, function(response) {
-                    
-                    if (response) {
-                        alert("response" + response + response.selectedText);
-                      }
-                });
-            });
+                chrome.tabs.sendMessage(tabs[0].id, { action: "alertHighlightedText" }, function(response) {
+                  if (response) {
+                      console.log("Response:", response);
+                      // If you expect the response to have a property called 'selectedText', access it like this:
+                      alert("Selected text: " + response.selectedText);
+                  }
+              });
         });
     } else {
         console.error('Button not found!');
