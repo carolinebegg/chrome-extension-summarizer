@@ -1,88 +1,62 @@
-console.log("[Popup] this is popup script");
+console.log("[Popup] Summary script loaded");
 
-async function injectScript() {
-  let queryOptions = { active: true, lastFocusedWindow: true };
-  let tabs = await chrome.tabs.query(queryOptions);
-  chrome.scripting.executeScript({
-    target: {tabId: tabs[0].id, allFrames: true},
-    files: ["contentScript.js"],
-  }).then(injectionResults => {
-    console.log("[Popup] done");
+// Function to send a text summary request to the background script
+function requestTextSummary(text) {
+  chrome.storage.local.get('apiKey', function(data) {
+    if (data.apiKey) {
+      chrome.runtime.sendMessage({
+        action: "generateText",
+        prompt: text,
+        apiKey: data.apiKey
+      }, response => {
+        if (response.error) {
+          console.error('Error:', response.error);
+          alert('Failed to generate summary: ' + response.error);
+        } else {
+          console.log('Generated summary:', response.text);
+          document.getElementById('summary-output').textContent = response.text;
+        }
+      });
+    } else {
+      alert('API key is not set. Please enter your API key in the options page.');
+    }
   });
 }
 
-injectScript();
-
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status == 'complete' && tab.active) {
-        // Now safe to send the message
-        chrome.tabs.sendMessage(tabId, {action: "performAction"}, function(response) {
-            console.log(response);
-        });
-    }
-});
-
-
-
+// Event listener for the summarize button
 document.addEventListener('DOMContentLoaded', function() {
-    var button = document.getElementById('alertTextButton');
-    if (button) {
-        button.addEventListener('click', function() {
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                alert("Alerting text");
-                chrome.tabs.sendMessage(tabs[0].id, { action: "alertHighlightedText" }, function(response) {
-                  if (response) {
-                      console.log("Response:", response);
-                      // If you expect the response to have a property called 'selectedText', access it like this:
-                      alert("Selected text: " + response.selectedText);
-                  }
-              });
-        });
-    } else {
-        console.error('Button not found!');
+  // Check selected text
+  chrome.storage.local.get('textSelected', function(data) {
+    if (data.textSelected) {
+      const textArea = document.getElementById('text-summary');
+      if (textArea) {
+        textArea.value = data.textSelected; // Display the selected text in the textarea
+      }
     }
-// check selected text
-    chrome.storage.local.get('textSelected', function(data) {
-        if (data.textSelected) {
-            // If an API key is found, redirect to the second page
-            var textArea = document.getElementById('text-summary');
-            if (textArea) {
-                textArea.value = data.textSelected;  // Display the selected text in the textarea
-            }
-        }
+  });
+
+  // Handle summarize button click
+  const summarizeButton = document.getElementById('summarizeButton');
+  if (summarizeButton) {
+    summarizeButton.addEventListener('click', function() {
+      const text = document.getElementById('text-summary').value;
+      requestTextSummary(text); // Send text to summarize
     });
-});
+  } else {
+    console.error('Summarize button not found!');
+  }
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.action === "newTextSelected") {
-      // Assume there's an element with ID 'text-summary' in your popup's HTML
-      var textArea = document.getElementById('text-summary');
-    //   alert("hey" + message.text);
-      if (textArea) {
-        textArea.value = message.text;  // Display the selected text in the textarea
-      }
-    }
-  });
-
-  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.action === "newTextSelected") {
-      if (textArea) {
-        textArea.value = message.text; // Update the textarea with the selected text
-      }
-    }
-  });
-
-  
-document.addEventListener('DOMContentLoaded', function() {
-    var logOutButton = document.getElementById('logOutButton');
+  // Logout button event listener
+  const logOutButton = document.getElementById('logOutButton');
+  if (logOutButton) {
     logOutButton.addEventListener('click', function() {
-        // Clear the stored API key
-        chrome.storage.local.remove('apiKey', function() {
-            alert("API Key has been cleared.");
-            window.location.href = 'home.html';
-        });
+      // Clear the stored API key
+      chrome.storage.local.remove('apiKey', function() {
+        alert("API Key has been cleared.");
+        window.location.href = 'home.html'; // Redirect to home for a new key
+      });
     });
+  } else {
+    console.error('Logout button not found!');
+  }
 });
-
-
-

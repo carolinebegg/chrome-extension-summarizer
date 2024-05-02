@@ -1,49 +1,28 @@
-// // This function is called when the user releases the mouse button (mouseup event)
-// document.addEventListener('mouseup', function (e) {
-//     // Get the selected text and remove any leading/trailing whitespace
-//     const selectedText = window.getSelection().toString().trim();
-  
-//     // Check if any text is selected
-//     if (selectedText.length > 0) {
-//       // Send a message to the background script with the selected text
-//       chrome.runtime.sendMessage(
-//         { action: 'saveSnippet', data: selectedText },
-//         (response) => {
-//           // Log the response status from the background script
-//           // console.log(response.status);
-//         }
-//       );
-//     }
-//   });
+// contentScript.js
 
+// Variable to hold the selected text
+var selectedText = "";
 
-//   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-//     if (request.action === "showAlert") {
-//       alert(request.message);
-//     }
-//   });
-  
-var selectedText = "";  // Declare selectedText once at the top
+// Listen for mouseup event to capture selected text
+document.addEventListener("mouseup", function() {
+    // Get the selected text from the page
+    var selection = window.getSelection();
+    selectedText = selection.toString().trim(); // Update the selectedText variable
 
-// document.addEventListener("mouseup", function(event) {
-//   var selection = window.getSelection();
-//   var selectionText = selection.toString().trim();
-  
-//   console.log("[Content] selection: " + selection);
-//   selectedText = selectionText;  // Assign new value without redeclaring
-//   if (selectionText) {
-//     // Send the selected text to the background or popup script
-//     // chrome.runtime.sendMessage({action: "newTextSelected", text: selectionText});
-//     chrome.storage.local.set({textSelected: selectionText}, function() {
-//       // alert('API key saved!' + '\n' + selectionText);
-//       // After saving, navigate to the second page
-//   });
-//   }
-// });
+    // If there is selected text, store it in chrome.storage.local
+    if (selectedText) {
+        chrome.storage.local.set({textSelected: selectedText}, function() {
+            console.log('Selected text saved:', selectedText);
+        });
+    }
+});
 
+// Listener for messages from the popup or background script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.action === "alertHighlightedText") {
-    console.log("alertHighlightedText received" + selectedText);
-    sendResponse({selectedText: selectedText});  // Use the updated selectedText
-  }
+    // Check if the received message is to alert highlighted text
+    if (request.action === "alertHighlightedText") {
+        // Respond with the selected text
+        sendResponse({selectedText: selectedText});
+    }
+    return true; // Indicate that you wish to send a response asynchronously
 });
