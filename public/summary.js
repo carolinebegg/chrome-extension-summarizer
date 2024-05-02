@@ -27,10 +27,17 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 document.addEventListener('DOMContentLoaded', function() {
   var summarizeButton = document.getElementById('alertTextButton');
   summarizeButton.addEventListener('click', async function() {
+    // print button clicked
+    console.log("A1: Summarize button clicked");
+   
       chrome.storage.local.get('textSelected', async function(data) {
           if (data.textSelected) {
               const promptText = "Summarize this text: " + data.textSelected; // Custom prompt to process the text
+              // print this is prompt text + prompt text
+              console.log("A2: This is prompt text" + promptText);
+
               const response = await fetchSummary(promptText);
+              console.log("A3: This is response from fetch" + response);
               if (response) {
                   var textArea = document.getElementById('text-summary');
                   if (textArea) {
@@ -51,28 +58,78 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // New function: Fetches the text summary from OpenAI API
+// async function fetchSummary(text) {
+//   const apiKey = await getStoredApiKey();
+//   console.log("B1: This is API key" + apiKey);
+//   if (!apiKey) {
+//       console.error('API Key is not set');
+//       return "API Key is not available. Please set your API Key.";
+//   }
+//   try {
+
+//     const response = await fetch('https://api.openai.com/v1/chat/completions', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${apiKey}`
+//       },
+//       body: JSON.stringify({
+//         model: "gpt-3.5-turbo",
+//         messages: [{"role": "user", "content": text}],
+//       }),
+//     });
+//       console.log("B2: This is response" + response);
+//       if (!response.ok) {
+//           throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
+//       }
+//       const data = await response.json();
+//       if (!data.choices || data.choices.length === 0) {
+//           throw new Error("No response from API");
+//       }
+//       return data.choices[0].text.trim(); // Return the summarized text
+//   } catch (error) {
+//       console.error('Error fetching summary:', error);
+//       return `Error fetching summary: ${error.message}`;
+//   }
+// }
+
 async function fetchSummary(text) {
-  const apiKey = await getStoredApiKey(); // Retrieve the stored API key
+  const apiKey = await getStoredApiKey();
+  console.log("B1: This is API key: " + apiKey);
+  if (!apiKey) {
+      console.error('API Key is not set');
+      return "API Key is not available. Please set your API Key.";
+  }
   try {
-      const response = await fetch('https://api.openai.com/v1/completions', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-              model: "text-davinci-002", // Change to the appropriate model
-              prompt: text,
-              max_tokens: 150
-          })
-      });
-      const data = await response.json();
-      return data.choices[0].text.trim(); // Return the summarized text
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{"role": "user", "content": text}],
+      }),
+    });
+    console.log("B2: This is response: " + response);
+    if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    console.log(" B3 API Response Data: ", JSON.stringify(data)); // This will help to inspect what the actual response is.
+    // if (!data.choices || data.choices.length === 0 || !data.choices[0].text) {
+    //     throw new Error("No response or missing 'text' in the response from API");
+    // }
+    console.log(" B4 API message content : ", data.choices[0].message.content); // This
+    return data.choices[0].message.content; // Return the summarized text
   } catch (error) {
-      console.error('Error fetching summary:', error);
-      return "Error fetching summary. Please try again.";
+    console.error('Error fetching summary:', error);
+    return `Error fetching summary: ${error.message}`;
   }
 }
+
+
 
 // New function: Retrieves the stored API key from local storage
 async function getStoredApiKey() {
