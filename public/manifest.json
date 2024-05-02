@@ -15,9 +15,8 @@
     "activeTab",
     "contextMenus",
     "tabs",
-    "scripting",
-    "https://api.openai.com/*"
-  ],
+    "scripting"
+  ],  
   "background": {
     "service_worker": "background.js"
   },
