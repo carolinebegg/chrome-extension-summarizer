@@ -1,4 +1,4 @@
-console.log("[Popup] this is popup script");
+// console.log("[Popup] this is popup script");
 
 async function injectScript() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -21,6 +21,72 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         });
     }
 });
+
+
+// Modified: Added event listeners and handling for the text summarization process
+document.addEventListener('DOMContentLoaded', function() {
+  var summarizeButton = document.getElementById('alertTextButton');
+  summarizeButton.addEventListener('click', async function() {
+      chrome.storage.local.get('textSelected', async function(data) {
+          if (data.textSelected) {
+              const promptText = "Summarize this text: " + data.textSelected; // Custom prompt to process the text
+              const response = await fetchSummary(promptText);
+              if (response) {
+                  var textArea = document.getElementById('text-summary');
+                  if (textArea) {
+                      textArea.value = response; // Display the summary in the textarea
+                  }
+              }
+          }
+      });
+  });
+
+  var logOutButton = document.getElementById('logOutButton');
+  logOutButton.addEventListener('click', function() {
+      chrome.storage.local.remove('apiKey', function() {
+          alert("API Key has been cleared.");
+          window.location.href = 'home.html'; // Redirect to home page after logging out
+      });
+  });
+});
+
+// New function: Fetches the text summary from OpenAI API
+async function fetchSummary(text) {
+  const apiKey = await getStoredApiKey(); // Retrieve the stored API key
+  try {
+      const response = await fetch('https://api.openai.com/v1/completions', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+              model: "text-davinci-002", // Change to the appropriate model
+              prompt: text,
+              max_tokens: 150
+          })
+      });
+      const data = await response.json();
+      return data.choices[0].text.trim(); // Return the summarized text
+  } catch (error) {
+      console.error('Error fetching summary:', error);
+      return "Error fetching summary. Please try again.";
+  }
+}
+
+// New function: Retrieves the stored API key from local storage
+async function getStoredApiKey() {
+  return new Promise((resolve, reject) => {
+      chrome.storage.local.get('apiKey', function(data) {
+          if (data.apiKey) {
+              resolve(data.apiKey);
+          } else {
+              reject('No API key found');
+          }
+      });
+  });
+}
+
 
 
 
@@ -64,6 +130,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     }
   });
 
+  // display selected text
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.action === "newTextSelected") {
       if (textArea) {
