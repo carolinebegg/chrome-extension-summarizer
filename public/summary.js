@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
    
       chrome.storage.local.get('textSelected', async function(data) {
           if (data.textSelected) {
-              const promptText = "Summarize this text: " + data.textSelected; // Custom prompt to process the text
+              const promptText = "You are a research assistant tasked with summarizing web articles. Exclude irrelevant content such as advertisements, promotional links, navigational elements, and legal disclaimers. Focus on the core article content and structure your summary as follows:1. **Overview**: Start with a clear, concise sentence capturing the type and essence of the article, such as 'This is a news article discussing..' 2. **Detailed Breakdown**: Organize the content into 2-4 subtopics, each with a bolded headline. Provide 1-2 bullet points per subtopic, succinctly covering key details.The summary must be moderately concise, strictly between 50 - 200 words; Target the summary towards average readers with some understanding of the topic, capable of grasping moderate technical details $$$" + data.textSelected + "$$$"; // Custom prompt to process the text
               // print this is prompt text + prompt text
               console.log("A2: This is prompt text" + promptText);
 
@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
+ 
+
   var logOutButton = document.getElementById('logOutButton');
   logOutButton.addEventListener('click', function() {
       chrome.storage.local.remove('apiKey', function() {
@@ -57,41 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// New function: Fetches the text summary from OpenAI API
-// async function fetchSummary(text) {
-//   const apiKey = await getStoredApiKey();
-//   console.log("B1: This is API key" + apiKey);
-//   if (!apiKey) {
-//       console.error('API Key is not set');
-//       return "API Key is not available. Please set your API Key.";
-//   }
-//   try {
-
-//     const response = await fetch('https://api.openai.com/v1/chat/completions', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${apiKey}`
-//       },
-//       body: JSON.stringify({
-//         model: "gpt-3.5-turbo",
-//         messages: [{"role": "user", "content": text}],
-//       }),
-//     });
-//       console.log("B2: This is response" + response);
-//       if (!response.ok) {
-//           throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
-//       }
-//       const data = await response.json();
-//       if (!data.choices || data.choices.length === 0) {
-//           throw new Error("No response from API");
-//       }
-//       return data.choices[0].text.trim(); // Return the summarized text
-//   } catch (error) {
-//       console.error('Error fetching summary:', error);
-//       return `Error fetching summary: ${error.message}`;
-//   }
-// }
 
 async function fetchSummary(text) {
   const apiKey = await getStoredApiKey();
