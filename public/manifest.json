@@ -1,27 +1,28 @@
 {
     "manifest_version": 3,
-    "name": "Webpage Summary",
+    "name": "Summarizer",
     "version": "1.0",
-    "description": "summarize any texts",
+    "description": "Summarize any text on the web with one click of a button!",
     "icons": {
-      "16": "images/favicon-16x16.png",
-      "32": "images/favicon-32x32.png",
-      "180": "images/apple-touch-icon.png",
-      "192": "images/android-chrome-192x192.png",
-      "512": "images/android-chrome-512x512.png"
+      "16": "images/16x16.png",
+      "32": "images/32x32.png",
+      "180": "images/180x180.png",
+      "192": "images/192x192.png",
+      "512": "images/512x512.png"
     },
     "offline_enabled": true,
     "permissions": ["storage", "activeTab", "contextMenus", "tabs", "scripting"],
+    "host_permissions": ["https://api.openai.com/*"], 
     "background": {
       "service_worker": "background.js"
     },
     "action": {
-      "default_popup": "home.html"
+      "default_popup": "popup.html"
     },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["contentScript.js"]
+        "js": ["content.js"]
       }
     ],
     "externally_connectable": {
