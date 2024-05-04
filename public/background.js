@@ -50,34 +50,64 @@ function verifyAPIKey(apiKey, sendResponse) {
   });
 }
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.response) {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.scripting.executeScript({
+        target: {tabId: tabs[0].id},
+        function: function(response) {
+          document.getElementById('response').innerText = response;
+        },
+        args: [request.response]
+      });
+    });
+  }
+});
+
+
 // Function to summarize text using the OpenAI API
-async function summarizeText(text, apiKey, sendResponse) {
-  const data = {
-      prompt: "Summarize the following text: " + text,
-      max_tokens: 300
-  };
-  const response = await(fetch('https://api.openai.com/v1/engines/davinci/completions', {
-      method: 'POST',
-      headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-  }))
-  .then(response => {
-      if (!response.ok) {
-          throw new Error('Failed to fetch the API');
-      }
-      return response.json();
-  })
-  .then(data => {
-      if (data.choices && data.choices.length > 0) {
-          sendResponse({ summary: data.choices[0].text });
-      } else {
-          throw new Error('Failed to generate summary');
-      }
-  })
-  .catch(error => {
-      sendResponse({ error: 'Error: ' + error.message });
-  });
+function summarizeText(text, apiKey, sendResponse) {
+  fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+        "model": "gpt-3.5-turbo",
+        "messages": [{
+            "role": "system",
+            "content": "You are a research assistant tasked with summarizing web articles. Exclude irrelevant content such as advertisements, promotional links, navigational elements, and legal disclaimers. Focus on the core article content and structure your summary as follows: 1. Overview (Start with a clear, concise sentence capturing the type and essence of the article, such as 'This is a news article discussing...'), 2. Detailed Breakdown (Organize the content into 2-4 subtopics, each with a bolded headline. Provide 1-2 bullet points per subtopic, succinctly covering key details.)"
+        }, {
+            "role": "user",
+            "content": text
+        }],
+        "max_tokens": 250,
+        "temperature": 0,
+    }),
+})
+.then(response => {
+    if (!response.ok) {
+        return response.json().then(errorResponse => {
+            const errorMessage = errorResponse.error && errorResponse.error.message ?
+                errorResponse.error.message : JSON.stringify(errorResponse, null, 2);
+            console.error('API Error:', errorMessage);
+            throw new Error('API Error: ' + errorMessage);
+        }).catch(error => {
+            throw new Error('Failed to parse error response: ' + error.message);
+        });
+    }
+    return response.json();
+})
+.then(data => {
+    if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+        sendResponse({ summary: data.choices[0].message.content });
+    } else {
+        throw new Error('Failed to generate summary');
+    }
+})
+.catch(error => {
+    sendResponse({ error: 'Error: ' + error.message });
+});
+
 }
