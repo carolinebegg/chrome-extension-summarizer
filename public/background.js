@@ -1,51 +1,53 @@
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    console.log(request, sender);
-    if (request.action === "verifyAPIKey") {
-        // Verify the API key
-        verifyAPIKey(request.apiKey, sendResponse);
-        return true; // Indicate that you wish to send a response asynchronously
-    } else if (request.action === "generateText") {
-        // Generate text using OpenAI's API
-        generateText(request.prompt, sendResponse);
-        return true; // Indicate that you wish to send a response asynchronously
-    }
-    // other message handling
-    sendResponse({response: "Message received"});
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "verifyAPIKey") {
+    verifyAPIKey(request.apiKey, sendResponse);
+    return true;
+  } else if (request.action === "generateText") {
+    generateTextSummary(request.prompt, request.apiKey, sendResponse);
+    return true;
   }
-);
-
-// ... [Rest of your code] ...
+  sendResponse({ response: "Message received" });
+});
 
 // Function to verify API key
 function verifyAPIKey(apiKey, sendResponse) {
-  // ... [Your existing code for verifyAPIKey] ...
-}
-
-// Function to generate text using OpenAI's API
-function generateText(prompt, sendResponse) {
-  chrome.storage.local.get('apiKey', function(data) {
-    if (data.apiKey) {
-      // Call OpenAI's API using the stored API key
-      fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${data.apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          prompt: prompt,
-          max_tokens: 150
-        })
-      })
-      .then(response => response.json())
-      .then(data => sendResponse({ text: data.choices[0].text }))
-      .catch(error => sendResponse({ error: error.message }));
-    } else {
-      sendResponse({ error: "API key is not set." });
+  fetch('https://api.openai.com/v1/engines', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`
     }
+  })
+  .then(response => {
+    if (response.ok) {
+      sendResponse({ valid: true });
+    } else {
+      sendResponse({ valid: false });
+    }
+  })
+  .catch(error => {
+    sendResponse({ valid: false, error: error.message });
   });
-  return true; // Keep the message channel open for the async response
 }
 
-// ... [Rest of your code] ...
+// Function to generate a summary
+function generateTextSummary(prompt, apiKey, sendResponse) {
+  fetch('https://api.openai.com/v1/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: "text-davinci-003",
+      prompt: `Summarize the following article:\n\n${prompt}`,
+      max_tokens: 150
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    sendResponse({ text: data.choices[0].text });
+  })
+  .catch(error => {
+    sendResponse({ error: error.message });
+  });
+}
