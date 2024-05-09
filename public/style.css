@@ -1,41 +1,28 @@
 body {
-    width: 500px;   /* Set the width of the popup */
-    height: 800px;  /* Set the height of the popup */
+    width: 500px; /* Set the width of the popup */
+    height: 800px; /* Set the height of the popup */
     font-family: Arial, sans-serif;
-    margin: 0; /* Removed left and right margins to keep consistent padding */
-    padding: 20px; /* Consistent padding around the content */
+    margin-left: 20px; /* Margin on the left side */
+    margin-right: 20px; /* Margin on the right side */
+    padding: 10px;
 }
 
-input[type="text"], input[type="password"], button, textarea {
-    width: calc(100% - 20px); /* Adjust for padding */
+input[type="text"], button {
+    width: 100%;
     padding: 10px;
-    margin-bottom: 10px; /* Space between elements */
-    box-sizing: border-box; /* Include padding in width calculation */
 }
 
-#logOutButton {
-    display: block; /* Make the logout button a block element */
-    width: auto; /* Let it be as wide as its content */
+.logOutButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
     padding: 10px;
-    margin-top: 10px; /* Space at the top */
-    margin-bottom: 10px; /* Space at the bottom */
 }
 
-#summarizeButton {
-    /* Styles for the summarize button */
-    padding: 10px;
-    margin-top: 10px; /* Space at the top */
-    margin-bottom: 10px; /* Space at the bottom */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corben', Georgia, Times, serif;
 }
 
-#summary-output {
-    width: 100%; /* Full width */
-    margin-top: 10px; /* Space at the top */
-    padding: 10px;
-    background-color: #f8f9fa; /* Light gray background */
-    border: 1px solid #ddd; /* Light gray border */
-    min-height: 150px; /* Minimum height */
-    box-sizing: border-box; /* Include padding in width and height calculation */
-    white-space: pre-wrap; /* Maintain text formatting and spaces */
-    word-wrap: break-word; /* Break long words */
+p, div {
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
 }

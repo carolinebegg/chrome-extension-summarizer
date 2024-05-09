@@ -1,50 +1,69 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if an API key is already stored when the DOM is fully loaded
-    chrome.storage.local.get('apiKey', function(data) {
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    const saveButton = document.getElementById('saveButton');
+    const summarySection = document.getElementById('summarySection');
+    const apiKeySection = document.getElementById('apiKeySection');
+    const newSummaryButton = document.getElementById('newSummaryButton');
+    const logOutButton = document.getElementById('logOutButton');
+    const textSummaryArea = document.getElementById('text-summary');
+    const summaryOutputArea = document.getElementById('summary-output');
+
+    // Check if an API key or selected text is already stored
+    chrome.storage.local.get(['apiKey', 'textSelected'], function (data) {
         if (data.apiKey) {
-            // If an API key is found, verify it
-            verifyAPIKey(data.apiKey, true, function(isValid) {
-                if (isValid) {
-                    // Proceed only if the API key is valid
-                    window.location.href = 'summary.html';
-                } else {
-                    // Optionally, clear the API key or notify the user
-                }
-            });
+            apiKeySection.style.display = 'none';
+            summarySection.style.display = 'block';
+        }
+        if (data.textSelected) {
+            textSummaryArea.value = data.textSelected;
         }
     });
 
-    // Update the save button event listener as follows:
-    document.getElementById('saveButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission which refreshes the page
-        const apiKey = document.getElementById('apiKeyInput').value;
-        verifyAPIKey(apiKey, false, function(isValid) {
-            if (isValid) {
-                chrome.storage.local.set({apiKey: apiKey}, function() {
-                    console.log('API key saved!');
-                    window.location.href = 'summary.html';
+    // Save and verify the API key when the save button is clicked
+    saveButton.addEventListener('click', function () {
+        const apiKey = apiKeyInput.value.trim();
+        if (apiKey) {
+            chrome.runtime.sendMessage({ action: "verifyAPIKey", key: apiKey }, function (response) {
+                if (response.verified) {
+                    apiKeySection.style.display = 'none';
+                    summarySection.style.display = 'block';
+                    chrome.storage.local.set({ 'apiKey': apiKey });
+                } else {
+                    alert('Failed to verify API Key. Please check and try again.');
+                }
+            });
+        } else {
+            alert('Please enter an API key.');
+        }
+    });
+
+    // Summarize the text when the summarize button is clicked
+    newSummaryButton.addEventListener('click', function () {
+        const textToSummarize = textSummaryArea.value;
+        chrome.storage.local.get('apiKey', function (data) {
+            if (data.apiKey && textToSummarize) {
+                chrome.runtime.sendMessage({ action: "summarizeText", text: textToSummarize, apiKey: data.apiKey }, function (response) {
+                    if (response.summary) {
+                        summaryOutputArea.value = response.summary;
+                    } else {
+                        alert('Error summarizing text: ' + response.error);
+                    }
                 });
             } else {
-                alert('API key is invalid. Please check and try again.');
+                alert('API Key not set or no text to summarize.');
             }
         });
     });
-});
 
-function verifyAPIKey(apiKey, isInitialCheck, callback) {
-    console.log('Verifying API key...');
-    chrome.runtime.sendMessage({action: "verifyAPIKey", apiKey: apiKey}, function(response) {
-        if (response.valid) {
-            console.log('API key is valid.');
-            callback(true);
-        } else {
-            console.error('API key is invalid.', response.error);
-            callback(false);
-            if (isInitialCheck) {
-                chrome.storage.local.remove('apiKey', function() {
-                    console.log('Invalid API key removed from storage.');
-                });
-            }
-        }
+    // Clear the API key and reset the UI when the logout button is clicked
+    logOutButton.addEventListener('click', function () {
+        chrome.storage.local.remove('apiKey', function () {
+            alert('API Key has been cleared.');
+            apiKeySection.style.display = 'block';
+            summarySection.style.display = 'none';
+            textSummaryArea.value = '';
+            summaryOutputArea.value = '';
+        });
     });
-}
+});

@@ -1,28 +1,22 @@
-// contentScript.js
+// This function handles text selection on the webpage
+function debounceSelection() {
+    clearTimeout(window.debounceTimer);
+    window.debounceTimer = setTimeout(() => {
+        let selectedText = window.getSelection().toString().trim();
+        if (selectedText.length > 0) {
+            chrome.runtime.sendMessage({ action: "textSelected", text: selectedText });
+        }
+    }, 250); // 250 ms debounce
+}
 
-// Variable to hold the selected text
-var selectedText = "";
-
-// Listen for mouseup event to capture selected text
-document.addEventListener("mouseup", function() {
-    // Get the selected text from the page
-    var selection = window.getSelection();
-    selectedText = selection.toString().trim(); // Update the selectedText variable
-
-    // If there is selected text, store it in chrome.storage.local
-    if (selectedText) {
-        chrome.storage.local.set({textSelected: selectedText}, function() {
-            console.log('Selected text saved:', selectedText);
-        });
-    }
+// Listen for mouseup events indicating the end of text selection
+document.addEventListener('mouseup', function () {
+    debounceSelection();
 });
 
-// Listener for messages from the popup or background script
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    // Check if the received message is to alert highlighted text
-    if (request.action === "alertHighlightedText") {
-        // Respond with the selected text
-        sendResponse({selectedText: selectedText});
+// Listener for messages from background or popup
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.action === "performAction") {
+        sendResponse({ status: "Action performed successfully" });
     }
-    return true; // Indicate that you wish to send a response asynchronously
 });
