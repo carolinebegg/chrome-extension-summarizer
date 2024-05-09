@@ -9,29 +9,15 @@
 <body>
     <div id="root">
         <h1>Webpage Summary</h1>
-        <div id="apiKeySection">
-            <form id="apiKeyForm">
-                <div class="form-group">
-                    <label for="apiKeyInput">Enter your OpenAI API Key:</label>
-                    <input type="password" class="form-control" id="apiKeyInput" placeholder="API Key">
-                    <small class="form-text text-muted">We'll never share your API key with anyone else.</small>
-                </div>
-                <button type="button" class="btn btn-primary" id="saveButton">Verify and Save API Key</button>
-            </form>
-        </div>
-        <div id="summarySection" style="display: none;">
+        <form id="apiForm">
             <div class="form-group">
-                <label for="text-summary">Selected Text:</label>
-                <textarea id="text-summary" rows="5" class="form-control"></textarea>
+                <label for="apiKeyInput">GPT API Key</label>
+                <input type="password" class="form-control" id="apiKeyInput" aria-describedby="apiKeyHelp" placeholder="Enter API Key">
+                <small id="apiKeyHelp" class="form-text text-muted">We'll never share your API key with anyone else.</small>
             </div>
-            <div class="form-group">
-                <label for="summary-output">Summary:</label>
-                <textarea id="summary-output" rows="5" class="form-control" readonly></textarea>
-            </div>
-            <button type="button" class="btn btn-info" id="newSummaryButton">Summarize Text</button>
-            <button type="button" class="btn btn-warning" id="logOutButton">Log Out</button>
-        </div>
+            <button type="submit" class="btn btn-primary" id="saveButton">Connect</button>
+        </form>
+        <script src="home.js"></script>
     </div>
-    <script src="popup.js"></script>
 </body>
 </html>
