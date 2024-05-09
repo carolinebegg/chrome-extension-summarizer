@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS for styling and responsive design -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <title>Chrome Extension Text Collector</title>
+    <!-- Local CSS for custom styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="root" class="container">
+        <h1>Webpage Text Summarizer</h1>
+
+        <!-- API Key Entry Section -->
+        <!-- This section is for entering and verifying the user's OpenAI API key -->
+        <div id="apiKeySection">
+            <form id="apiKeyForm">
+                <div class="form-group">
+                    <label for="apiKeyInput">Enter your OpenAI API Key:</label>
+                    <!-- Input field for the API key, type is password to hide input -->
+                    <input type="password" class="form-control" id="apiKeyInput" placeholder="API Key">
+                    <!-- Helper text under the input field -->
+                    <small class="form-text text-muted">We'll never share your API key with anyone else.</small>
+                </div>
+                <!-- Button to trigger API key verification -->
+                <button type="button" class="btn btn-primary" id="saveButton">Verify and Save API Key</button>
+            </form>
+        </div>
+
+        <!-- Text Summarization Section -->
+        <!-- This section appears only after the API key is verified -->
+        <div id="summarySection" style="display: none;">
+            <div class="form-group">
+                <label for="text-summary">Selected Text:</label>
+                <!-- Textarea to display selected text from the webpage -->
+                <textarea id="text-summary" rows="5" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="summary-output">Summary:</label>
+                <!-- Textarea to display the summarized text, readonly to prevent editing -->
+                <textarea id="summary-output" rows="5" class="form-control" readonly></textarea>
+            </div>
+            <!-- Button to trigger text summarization -->
+            <button type="button" class="btn btn-info" id="newSummaryButton">Summarize Text</button>
+            <!-- Button to log out and clear stored API key -->
+            <button type="button" class="btn btn-warning" id="logOutButton">Log Out</button>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle popup functionalities -->
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+body {
+    width: 500px;   /* Set the width of the popup */
+    height: 800px;  /* Set the height of the popup */
+    font-family: Arial, sans-serif;
+    margin-left: 20px; /* Margin on the left side */
+    margin-right: 20px; /* Margin on the right side */
+    padding: 10px;
+}
+
+input[type="text"], button {
+    width: 100%;
+    padding: 10px;
+}
+
+.logOutButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding: 10px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corben', Georgia, Times, serif;
+}
+p, div {
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
+}
