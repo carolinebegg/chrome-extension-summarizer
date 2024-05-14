@@ -1,4 +1,4 @@
-# README.md for AI Research Assistant Chrome Extension
+# AI Summarizer Chrome Extension
 
 ## Project Description
 
