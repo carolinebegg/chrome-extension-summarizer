@@ -18,6 +18,7 @@ The AI Research Assistant is a Chrome Extension designed to enhance the online r
 - OpenAI API Key (You can obtain one by signing up at [OpenAI](https://platform.openai.com/signup))
 - Our GitHub Repository: https://github.com/carolinebegg/chrome-extension-summarizer
 
+
 ### Steps
 
 1. **Download the Extension:**
@@ -45,7 +46,7 @@ The AI Research Assistant is a Chrome Extension designed to enhance the online r
 
 ## Demo Video
 
-For a detailed demonstration of the installation and usage of the AI Research Assistant Chrome Extension, please watch the [Demo Video](https://youtu.be/your-youtube-link) (will update later).
+For a detailed demonstration of the installation and usage of the AI Research Assistant Chrome Extension, please watch the [Demo Video](https://drive.google.com/drive/folders/1BmYEw35NQfQ339QFwt755QzWto_33I46?usp=drive_link)
 
 
 ---
