@@ -7,7 +7,7 @@ The AI Research Assistant is a Chrome Extension designed to enhance the online r
 ## Features
 
 - **Efficient Information Processing:** Quickly condenses long and complex web articles into digestible highlights.
-- **Tailored Summarization:** Enables selective summarization of specific webpage sections.
+- **Tailored Summarization:** Enables selective summarization of specific highlighted sections.
 - **User-Centric Design:** Offers a simple and intuitive interface that integrates directly into the web browser.
 
 ## Installation Instructions
