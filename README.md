@@ -46,8 +46,11 @@ The AI Research Assistant is a Chrome Extension designed to enhance the online r
 
 ## Screenshots:
 
+## API Verification
+
 <img width="1440" alt="Screen Shot 2024-05-14 at 9 54 52 PM" src="https://github.com/carolinebegg/chrome-extension-summarizer/assets/104693942/89e307c6-198f-4d10-9d19-48287f4d32a7">
 
+## Summarization in action
 
 <img width="1440" alt="Screen Shot 2024-05-14 at 9 53 50 PM" src="https://github.com/carolinebegg/chrome-extension-summarizer/assets/104693942/a9d26c63-70a6-400e-865c-5bec7e14dd9a">
 
