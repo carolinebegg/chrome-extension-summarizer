@@ -63,6 +63,11 @@ The AI Research Assistant is a Chrome Extension designed to enhance the online r
 For a detailed demonstration of the installation and usage of the AI Research Assistant Chrome Extension, please watch the [Demo Video](https://drive.google.com/drive/folders/1BmYEw35NQfQ339QFwt755QzWto_33I46?usp=drive_link). (It's on [YouTube](https://youtu.be/7lay70tsKLc) as well.)
 
 
+## Support
+For support, queries, or feedback, please open an issue on our GitHub repository [here](https://github.com/carolinebegg/chrome-extension-summarizer/issues).
+
+
+
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
