@@ -1,6 +1,6 @@
 # AI Summarizer Chrome Extension
 
-![Summarizer logo](SUMMARIZER.png){width=800px}
+![Summarizer logo](SUMMARIZER.png)
 
 ## Project Description
 
