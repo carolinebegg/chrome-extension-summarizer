@@ -1,5 +1,7 @@
 # AI Summarizer Chrome Extension
 
+![Summarizer logo](SUMMARIZER.png){width=800px}
+
 ## Project Description
 
 The AI Research Assistant is a Chrome Extension designed to enhance the online research process. It allows users to quickly summarize web pages or specific sections directly from their browser, providing concise and digestible content summaries. This tool is particularly useful for students, researchers, and professionals who need to process large amounts of information efficiently.
